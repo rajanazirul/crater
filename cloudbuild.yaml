@@ -1,6 +1,8 @@
 steps:
 - name: 'docker/compose:1.19.0'
   args: ['up', '-d']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['tag', 'app:latest', '--destination=asia.gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
-images: ['--destination=asia.gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
+- name: 'gcr.io/kaniko-project/executor:v1.6.0'
+    args:
+      - '--destination=asia.gcr.io/$PROJECT_ID/invoicemudah:latest'
+      - '--destination=asia.gcr.io/$PROJECT_ID/invoicemudah:$SHORT_SHA'
+      - '--cache=true'
