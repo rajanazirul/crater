@@ -1,18 +1,6 @@
 steps:
-  - name: 'gcr.io/kaniko-project/executor:v1.6.0'
-    args:
-      - '--destination=asia.gcr.io/$PROJECT_ID/invoicemudah:latest'
-      - '--destination=asia.gcr.io/$PROJECT_ID/invoicemudah:$SHORT_SHA'
-      - '--cache=true'
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
-    args:
-      - 'run'
-      - 'deploy'
-      - 'invoicemudah'
-      - '--image'
-      - 'asia.gcr.io/$PROJECT_ID/invoicemudah:$SHORT_SHA'
-      - '--region'
-      - 'asia-southeast1'
-      - '--platform'
-      - 'managed'
+- name: 'docker/compose:1.19.0'
+  args: ['up', '-d']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['tag', 'workspace_app:latest', '--destination=asia.gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
+images: ['--destination=asia.gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
